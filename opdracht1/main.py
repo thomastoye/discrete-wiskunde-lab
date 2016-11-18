@@ -8,8 +8,10 @@ from tabulate import tabulate
 Gegeven een restklassenring Zn,+,*. Bepaal de deelgroepen <x> voor alle elementen x e Zxn en controleer de stelling van Lagrange.
 """
 
-n = int(sys.argv[1])
-#n = 5
+n = 7
+
+if(len(sys.argv) > 1):
+  n = int(sys.argv[1])
 
 class Restklassenring:
 
@@ -40,17 +42,15 @@ class Restklassenring:
 
    return [x[0] for x in tabel if self._make_overline(1) in x[1]]
 
-  def generatoren(self):
-    return [x[0] for x in zip(range(0, self.n), self.cayley_tabel_maal()) if set(x[1]) == set(range(self.n))]
-
   def orde(self):
     return len(self.eenheden())
 
-  def deelgroepen1(self):
+  def deelgroepen_Zn_plus(self):
     return self.deelgroepen(self.cayley_tabel_maal())
 
-  def deelgroepen2(self):
-    inhoud = self.generatoren()
+  def deelgroepen_Zxn_maal(self):
+    # oplopende machten
+    inhoud = self.eenheden()
 
     lookup = { x: {} for x in inhoud } # will be 2D, e.g. lookup[1][3]
 
@@ -94,6 +94,15 @@ class Restklassenring:
 
       pass
 
+  def generatoren(self):
+    result = []
+
+    d = self.deelgroepen_Zxn_maal()
+    for key in d:
+      if(d[key] == self.n - 1):
+        result.append(key)
+
+    return result
 
   def _make_overline(self, x):
     return x
@@ -112,25 +121,24 @@ print('Eenheden')
 pprint(r.eenheden())
 print('\n')
 
-print('Generatoren')
-pprint(r.generatoren())
-print('\n')
-
 print('Orde: ' + str(r.orde()))
 print('\n')
 
 print('Deelgroepen voortgebracht door x\u0305 element van Z%s,+' % n)
-deelgroepen = r.deelgroepen1()
+deelgroepen = r.deelgroepen_Zn_plus()
 orde = r.orde()
 for key in deelgroepen:
-  print(' <' + str(key) + '\u0305> = ' + str(deelgroepen[key]))
+  print(' |<' + str(key) + '\u0305>| = ' + str(deelgroepen[key]))
 print('\n')
 
 print('Deelgroepen voortgebracht door x\u0305 element van Zx%s,*' % n)
-deelgroepen = r.deelgroepen2()
+deelgroepen = r.deelgroepen_Zxn_maal()
 orde = r.orde()
 for key in deelgroepen:
-  print(' <' + str(key) + '\u0305> = ' + str(deelgroepen[key]))
+  print(' |<' + str(key) + '\u0305>| = ' + str(deelgroepen[key]))
 
 print('\n\n')
+
+print('Generatoren')
+print(r.generatoren())
 
