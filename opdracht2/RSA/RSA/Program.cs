@@ -64,6 +64,11 @@ namespace RSA
             int inverse = FindInverseWithBezout(eA, phi);
             int inverse2 = FindInverseWithBezout2(eA, phi);
 
+            int test = FindInverseWithBezout(3,10);
+            int test2 = FindInverseWithBezout2(3,10);
+            Console.WriteLine("TEST: " + test);
+            Console.WriteLine("TEST2: " + test2);
+
             int dA = inverse % phi;
             Console.WriteLine("dA = " + dA);
 
@@ -151,11 +156,28 @@ namespace RSA
             *      1 = a1 - (b1 - a1 * q1) * q2
             *      1 = (1 + q1q2)*a1 + (-q2)*b1;
             */
-            int q1 = test[0][2];
-            int q2 = test[1][2];
 
-            int alpha = 1 + q1 * q2;
-            int beta = -q2;
+            // IF REST IS ZERO!! 
+            int q1, q2;
+            int alpha, beta;
+            int r1 = test[0][3];
+            if (r1 == 1)
+            {
+                //ggd takes 2 steps 
+                //==> r1 = 1 = b1 - a1 * q1
+                //         1 = (-q1)*a1
+                q1 = 
+            }
+            else
+            {
+                //ggd takes 3 steps
+                q1 = test[0][2];
+                q2 = test[1][2];
+                alpha = 1 + q1 * q2;
+                beta = -q2;
+            }
+
+         
             Console.WriteLine(String.Format("1: alpha={0}, beta={1}, gcd={2}", alpha, beta, b));
 
 
