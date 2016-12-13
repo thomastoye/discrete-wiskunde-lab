@@ -50,11 +50,11 @@ def findBezout(f,g):
     beta = beta.as_poly(x, domain='GF(' + z + ')').args[0]
 
     print("alpha={0}, beta={1}, gcd={2}".format(alpha, beta, g))
-    inverse = beta
+    inverse = alpha
 
     testIfOne = (f*inverse).expand()
-    testIfOne = testIfOne.as_poly(x, domain='GF(' + z + ')').args[0]
-    print("This should be one:", testIfOne)
+    testIfOne = testIfOne.as_poly(x, domain='GF(' + z + ')')
+    print("This should be one:", testIfOne.args[0])
 
     return inverse
 
